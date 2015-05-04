@@ -9,9 +9,9 @@ import visitor.*;
 
 public class Handle_main extends DepthFirstVisitor
 {
-	HashMap<String,String> Table = new HashMap<String,String>();
+	LinkedHashMap<String,String> Table = new LinkedHashMap<String,String>();
 	
-	HashMap<String,String> mainTable = new HashMap<String,String>();
+	LinkedHashMap<String,String> mainTable = new LinkedHashMap<String,String>();
 	
 	
 	/* Constructor */

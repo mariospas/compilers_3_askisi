@@ -9,11 +9,11 @@ import visitor.*;
 
 public class Inside_class extends DepthFirstVisitor
 {
-	HashMap<String,HashMap<String,Fun_or_Ident>> Table = new HashMap<String,HashMap<String,Fun_or_Ident>>();
-	HashMap<String,Fun_or_Ident> temp = new HashMap<String,Fun_or_Ident>();
-	HashMap<String,String> arg = new HashMap<String,String>();
-	HashMap<String,String> var; /*<Name,Type> */
-	HashMap<String,String> DeclClasses;
+	LinkedHashMap<String,LinkedHashMap<String,Fun_or_Ident>> Table = new LinkedHashMap<String,LinkedHashMap<String,Fun_or_Ident>>();
+	LinkedHashMap<String,Fun_or_Ident> temp = new LinkedHashMap<String,Fun_or_Ident>();
+	LinkedHashMap<String,String> arg = new LinkedHashMap<String,String>();
+	LinkedHashMap<String,String> var; /*<Name,Type> */
+	LinkedHashMap<String,String> DeclClasses;
 	ArrayList<String> argList;  //arguments with order of insertion
 	
 	String className;
@@ -22,7 +22,7 @@ public class Inside_class extends DepthFirstVisitor
 	int count = 0;
 	boolean fromMethod;
 	
-	public Inside_class(Goal n, HashMap<String,String> DecClasses) throws Exception, SemError
+	public Inside_class(Goal n, LinkedHashMap<String,String> DecClasses) throws Exception, SemError
 	{
 		DeclClasses = DecClasses;
 		n.f0.accept(this);
@@ -42,7 +42,7 @@ public class Inside_class extends DepthFirstVisitor
 	 */
 	public void visit(ClassDeclaration n) throws Exception, SemError
 	{
-		HashMap<String,Fun_or_Ident> temp = new HashMap<String,Fun_or_Ident>(); 
+		LinkedHashMap<String,Fun_or_Ident> temp = new LinkedHashMap<String,Fun_or_Ident>(); 
 		this.temp = temp;
 		
 		//isos den xreiazete
@@ -73,7 +73,7 @@ public class Inside_class extends DepthFirstVisitor
 	
 	public void visit(ClassExtendsDeclaration n) throws Exception, SemError
 	{
-		HashMap<String,Fun_or_Ident> temp = new HashMap<String,Fun_or_Ident>(); 
+		LinkedHashMap<String,Fun_or_Ident> temp = new LinkedHashMap<String,Fun_or_Ident>(); 
 		this.temp = temp;
 		
 		//isos den xreiazete
@@ -144,10 +144,10 @@ public class Inside_class extends DepthFirstVisitor
 	
 	public void visit(MethodDeclaration n) throws Exception, SemError
 	{
-		HashMap<String,String> var = new HashMap<String,String>(); 
+		LinkedHashMap<String,String> var = new LinkedHashMap<String,String>(); 
 		this.var = var;
 		
-		HashMap<String,String> arg = new HashMap<String,String>(); 
+		LinkedHashMap<String,String> arg = new LinkedHashMap<String,String>(); 
 		this.arg = arg;
 		
 		Fun_or_Ident foi = new Fun_or_Ident();
@@ -271,7 +271,7 @@ public class Inside_class extends DepthFirstVisitor
 		//check all extend parents
 		while(this.extendName != null)
 		{
-			HashMap<String,Fun_or_Ident> OriClass = this.Table.get(this.extendName);
+			LinkedHashMap<String,Fun_or_Ident> OriClass = this.Table.get(this.extendName);
 			Set<String> funNames = OriClass.keySet();
 			for(Iterator<String> it = funNames.iterator(); it.hasNext();)
 			{

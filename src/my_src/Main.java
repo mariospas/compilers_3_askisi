@@ -25,19 +25,44 @@ public class Main {
 			    Handle_main eval = new Handle_main();
 			    root.accept(eval);
 			    
+				Set<String> keys = eval.Table.keySet();
+				for(Iterator<String> it = keys.iterator(); it.hasNext();)
+				{
+					
+					String key_name = it.next().toString();
+					String type1 = eval.Table.get(key_name);
+					System.out.println("key_name = "+key_name+" type = "+type1);
+				}
+			    
 			    //inside_class
 			    //System.out.println("^^^^^^^^^^ before inside class ^^^^^^^^^^^^");
 			    Inside_class eval2 = new Inside_class(root,eval.Table);
+			    
+			    Set<String> keys2 = eval2.Table.keySet();
+				for(Iterator<String> it = keys2.iterator(); it.hasNext();)
+				{
+					
+					String class_name = it.next().toString();
+					LinkedHashMap<String,Fun_or_Ident> type1 = eval2.Table.get(class_name);
+					System.out.println("class_name = "+class_name);
+					
+					Set<String> methods_name = type1.keySet();
+					for(Iterator<String> iter = methods_name.iterator(); iter.hasNext();)
+					{
+						String method = iter.next().toString();
+						System.out.println("method = "+method);
+					}
+				}
 			    //System.out.println("^^^^^^^^^^ after inside class ^^^^^^^^^^^^");
 			    
 			    //inside_method
 			    //System.out.println("^^^^^^^^^^ before inside methods ^^^^^^^^^^^^");
-			    Inside_methods eval3 = new Inside_methods(root, eval2.DeclClasses, eval2.Table);
+			    //Inside_methods eval3 = new Inside_methods(root, eval2.DeclClasses, eval2.Table);
 			    //System.out.println("^^^^^^^^^^ after inside methods ^^^^^^^^^^^^");
 			    
 			    //type check
 			    //System.out.println("^^^^^^^^^^ before type checking ^^^^^^^^^^^^");
-			    Type_check eval4 = new Type_check(root, eval3.DeclClasses, eval3.Table, eval.mainTable);
+			    //Type_check eval4 = new Type_check(root, eval3.DeclClasses, eval3.Table, eval.mainTable);
 			    System.out.println("^^^File : "+args[i]+"   Success ^^^^^^^^^^");
 	        }
 	        catch(ParseException ex){
