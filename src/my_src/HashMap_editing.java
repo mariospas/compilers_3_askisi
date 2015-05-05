@@ -125,7 +125,7 @@ public class HashMap_editing
 						{				
 							if(Name.equals(extend_class+"_"+method))
 							{
-								vtableTemp.put(id, method);
+								vtableTemp.put(id, class_name+"_"+method);
 								break;
 							}
 							id = iter.next();
@@ -149,27 +149,8 @@ public class HashMap_editing
 				String method = iterat.next().toString();
 				if(!(method.charAt(0) == '#'))
 				{
-					/*if(idTemp.containsValue(extend_class+"_"+method))
-					{
-						int id = 0;
-						String Name = null;
-						Set<Integer> previous_funs = idTemp.keySet();
-						Name = idTemp.get(id);
-						for(Iterator<Integer> iter = previous_funs.iterator(); iter.hasNext();)
-						{
-							if(Name.equals(extend_class+"_"+method))
-							{
-								idTemp.put(id, method);
-								break;
-							}
-							id = iter.next();
-							Name = idTemp.get(id);			
-						}
-					}*/
-					
-						int size = idTemp.size();
-						idTemp.put(size,class_name+"_"+method);
-					
+					int size = idTemp.size();
+					idTemp.put(size,class_name+"_"+method);
 				}
 			}
 			
