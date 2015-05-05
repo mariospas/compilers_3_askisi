@@ -13,7 +13,7 @@ public class Inside_class extends DepthFirstVisitor
 	LinkedHashMap<String,Fun_or_Ident> temp = new LinkedHashMap<String,Fun_or_Ident>();
 	LinkedHashMap<String,String> arg = new LinkedHashMap<String,String>();
 	LinkedHashMap<String,String> var; /*<Name,Type> */
-	LinkedHashMap<String,String> DeclClasses;
+	LinkedHashMap<String,String> DeclClasses;   //classname,extend class
 	ArrayList<String> argList;  //arguments with order of insertion
 	
 	String className;

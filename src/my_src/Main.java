@@ -38,6 +38,8 @@ public class Main {
 			    //System.out.println("^^^^^^^^^^ before inside class ^^^^^^^^^^^^");
 			    Inside_class eval2 = new Inside_class(root,eval.Table);
 			    
+			    
+			    //////////////prints////////////////////////
 			    Set<String> keys2 = eval2.Table.keySet();
 				for(Iterator<String> it = keys2.iterator(); it.hasNext();)
 				{
@@ -50,9 +52,70 @@ public class Main {
 					for(Iterator<String> iter = methods_name.iterator(); iter.hasNext();)
 					{
 						String method = iter.next().toString();
-						System.out.println("method = "+method);
+						if(method.charAt(0) == '#')
+						{
+							System.out.println("method = "+method);
+						}
+						else System.out.println("var = "+method);
 					}
 				}
+				
+				
+				Set<String> decClas = eval2.DeclClasses.keySet();
+				for(Iterator<String> it = decClas.iterator(); it.hasNext();)
+				{
+					
+					String key_name = it.next().toString();
+					String type1 = eval2.DeclClasses.get(key_name);
+					System.out.println("class_name = "+key_name+" extended_class = "+type1);
+				}
+				
+				/////////////////prints/////////////////
+				
+				HashMap_editing edit = new HashMap_editing(eval2.Table, eval2.DeclClasses);
+				edit.Select_VTable_Data();
+				LinkedHashMap<String,LinkedHashMap<Integer,String>>  vtables = edit.VTables;
+				LinkedHashMap<String,LinkedHashMap<Integer,String>>  idtables = edit.ClassIds;
+				
+				System.out.println("\n******** Methods VTABLE **********\n");
+				
+				Set<String> classnames = vtables.keySet();
+				for(Iterator<String> it = classnames.iterator(); it.hasNext();)
+				{
+					
+					String class_name = it.next().toString();
+					LinkedHashMap<Integer,String> type1 = vtables.get(class_name);
+					System.out.println("class_name = "+class_name);
+					
+					Set<Integer> methods_name = type1.keySet();
+					for(Iterator<Integer> iter = methods_name.iterator(); iter.hasNext();)
+					{
+						int pos = iter.next();
+						String method = type1.get(pos);
+						System.out.println("pos = "+pos+" method = "+method);
+					}
+				}
+				
+				System.out.println("\n******** IDS TABLE **********\n");
+				
+				classnames = idtables.keySet();
+				for(Iterator<String> it = classnames.iterator(); it.hasNext();)
+				{
+					
+					String class_name = it.next().toString();
+					LinkedHashMap<Integer,String> type1 = idtables.get(class_name);
+					System.out.println("class_name = "+class_name);
+					
+					Set<Integer> methods_name = type1.keySet();
+					for(Iterator<Integer> iter = methods_name.iterator(); iter.hasNext();)
+					{
+						int pos = iter.next();
+						String method = type1.get(pos);
+						System.out.println("pos = "+pos+" var = "+method);
+					}
+				}
+				
+				
 			    //System.out.println("^^^^^^^^^^ after inside class ^^^^^^^^^^^^");
 			    
 			    //inside_method
