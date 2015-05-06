@@ -115,6 +115,8 @@ public class Main {
 					}
 				}
 				
+				MiniJavaToSpiglet eval3 = new MiniJavaToSpiglet(root, eval2.Table, eval2.DeclClasses, vtables, idtables);
+				System.out.println(eval3.spiglet_code+"kkkkkkk");
 				
 			    //System.out.println("^^^^^^^^^^ after inside class ^^^^^^^^^^^^");
 			    
