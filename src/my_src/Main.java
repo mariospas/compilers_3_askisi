@@ -1,8 +1,12 @@
 package my_src;
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 
 import parser.MiniJavaParser;
@@ -117,6 +121,21 @@ public class Main {
 				
 				MiniJavaToSpiglet eval3 = new MiniJavaToSpiglet(root, eval2.Table, eval2.DeclClasses, vtables, idtables);
 				System.out.println(eval3.spiglet_code+"kkkkkkk");
+				
+				//Output
+				int len = args[i].length() - 4;
+				String input = new String(args[i]);
+				String name = input.substring(0,len);
+				System.out.println(name);
+				
+				File output = new File(name+"spg");
+				if( !output.exists() )
+					output.createNewFile();
+				FileWriter out = new FileWriter(output.getAbsoluteFile());
+				BufferedWriter bw = new BufferedWriter(out);
+				
+				bw.write(eval3.spiglet_code);
+				bw.close();
 				
 			    //System.out.println("^^^^^^^^^^ after inside class ^^^^^^^^^^^^");
 			    
