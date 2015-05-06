@@ -294,10 +294,11 @@ public class MiniJavaToSpiglet extends DepthFirstVisitor
    		//flag = true;
    		value = "right";
    		n.f2.accept(this);
+   		String save2 = new String(id_string);
    		
    		value = "left";
    		n.f0.accept(this);     //epistrofh id_string
-   		spiglet_code += "TEMP "+CurrentTemp()+"\n";
+   		spiglet_code += " "+save2+"\n";
    		
    		String eq = new String(expr);
    		if( eq != null && eq.equals("this") )
@@ -449,6 +450,7 @@ public class MiniJavaToSpiglet extends DepthFirstVisitor
 		//n.f0.accept(this);
 		spiglet_code +=" "+save1+" "+save2+"\n";
 		
+		id_string = "TEMP "+CurrentTemp();
 		expr = "MINUS";
    }
    
@@ -473,6 +475,7 @@ public class MiniJavaToSpiglet extends DepthFirstVisitor
 		
 		spiglet_code +=" "+save1+" "+save2+"\n";
 		
+		id_string = "TEMP "+CurrentTemp();
 		expr = "PLUS";
    }
    
@@ -498,6 +501,7 @@ public class MiniJavaToSpiglet extends DepthFirstVisitor
 		//n.f0.accept(this);
 		spiglet_code +=" "+save1+" "+save2+"\n";
 		
+		id_string = "TEMP "+CurrentTemp();
 		expr = "TIMES";
    }
  
@@ -732,6 +736,50 @@ public class MiniJavaToSpiglet extends DepthFirstVisitor
 	   id_string = "TEMP "+CurrentTemp();
    }
    
+   
+   /* ArrayAllocationExpression */
+   /**
+    * Grammar production:
+    * <PRE>
+    * f0 -> "new"
+    * f1 -> "int"
+    * f2 -> "["
+    * f3 -> Expression()
+    * f4 -> "]"
+    * </PRE>
+    */
+   public void visit(ArrayAllocationExpression n) throws Exception, SemError{
+	   
+	   value = "right";
+	   n.f3.accept(this);
+	   spiglet_code += "\tMOVE TEMP "+AssignTemp()+" PLUS "+id_string+" 1\n";
+	   spiglet_code += "\tMOVE TEMP "+AssignTemp()+" 4\n";
+	   spiglet_code += "\tMOVE TEMP "+AssignTemp()+" TIMES TEMP "+(CurrentTemp()-2)+" TEMP "+(CurrentTemp()-1)+"\n";
+	   spiglet_code += "\tMOVE TEMP "+AssignTemp()+" HALLOCATE TEMP "+(CurrentTemp()-1)+"\n";
+	   String save_array = "TEMP "+CurrentTemp();
+	   
+	   spiglet_code += "\tMOVE TEMP "+AssignTemp()+" 4\n";
+	   String count = "TEMP "+CurrentTemp();
+	   spiglet_code += "L"+AssignLabel()+"\tNOOP\n";
+	   spiglet_code += "\tMOVE TEMP "+AssignTemp()+" PLUS "+id_string+" 1\n";
+	   spiglet_code += "\tMOVE TEMP "+AssignTemp()+" 4\n";
+	   spiglet_code += "\tMOVE TEMP "+AssignTemp()+" TIMES TEMP "+(CurrentTemp()-2)+" TEMP "+(CurrentTemp()-1)+"\n";
+	   spiglet_code += "\tMOVE TEMP "+AssignTemp()+" LT "+count+" TEMP "+(CurrentTemp()-1)+"\n";
+	   spiglet_code += "\tCJUMP TEMP "+CurrentTemp()+" L"+AssignLabel()+"\n";
+	   spiglet_code += "\tMOVE TEMP "+AssignTemp()+" PLUS "+save_array+" TEMP "+count+"\n";
+	   spiglet_code += "\tMOVE TEMP "+AssignTemp()+" 0\n";
+	   spiglet_code += "\tHSTORE TEMP "+(CurrentTemp()-1)+" 0 TEMP "+CurrentTemp()+"\n";
+	   spiglet_code += "\tMOVE "+count+" PLUS "+count+" 4\n";
+	   spiglet_code += "\tJUMP L"+(CurrentLabel()-1)+"\n";
+	   
+	   spiglet_code += "L"+CurrentLabel()+"\tNOOP\n";
+	   spiglet_code += "\tMOVE TEMP "+AssignTemp()+" 4\n";
+	   spiglet_code += "\tMOVE TEMP "+AssignTemp()+" TIMES "+id_string+" TEMP "+(CurrentTemp()-1)+"\n";
+	   
+	   spiglet_code += "\tHSTORE "+save_array+" 0 TEMP "+CurrentTemp()+"\n";
+	   id_string = new String(save_array);
+   }
+		
    
    
    /* Identifier */
