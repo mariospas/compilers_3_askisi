@@ -18,6 +18,8 @@ class Fac {
         b = num;
         //System.out.println(b);
         number = new int[num];
+        number[1] = b; 
+        System.out.println(number[1]);
         if (num < 1)
             num_aux = 1 ;
         else
