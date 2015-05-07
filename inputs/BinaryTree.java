@@ -10,15 +10,15 @@ class BinaryTree{
 class BT {
 
     public int Start(){
-	Tree root ;
-	boolean ntb ;
-	int nti ;
+	//Tree root ;
+	//boolean ntb ;
+	//int nti ;
 
-	root = new Tree();
-	ntb = root.Init(16);
-	ntb = root.Print();
+	//root = new Tree();
+	//ntb = root.Init(16);
+	//ntb = root.Print();*/
 	System.out.println(100000000);
-	ntb = root.Insert(8) ;
+	/*ntb = root.Insert(8) ;
 	ntb = root.Print();
 	ntb = root.Insert(24) ;
 	ntb = root.Insert(4) ;
@@ -34,7 +34,7 @@ class BT {
 	System.out.println(root.Search(12));
 	ntb = root.Delete(12);
 	ntb = root.Print();
-	System.out.println(root.Search(12));
+	System.out.println(root.Search(12));*/
 
 	return 0 ;
     }
@@ -211,23 +211,23 @@ class Tree{
 	int auxkey1 ;
 	int auxkey2 ;
 	
-	if (c_node.GetHas_Left()) 
-	    ntb = this.RemoveLeft(p_node,c_node) ;
+	if (true) 
+	    ntb = 5;//this.RemoveLeft(p_node,c_node) ;
 	else 
-	    if (c_node.GetHas_Right())
-		ntb = this.RemoveRight(p_node,c_node) ;
+	    if (false)
+		ntb = 5;//this.RemoveRight(p_node,c_node) ;
 	    else {
-		auxkey1 = c_node.GetKey();
+		auxkey1 = 5;//c_node.GetKey();
 		//auxtree01 = p_node.GetLeft() ;
 		//auxkey2 = auxtree01.GetKey() ;
-		auxkey2 = (p_node.GetLeft()).GetKey() ;
-		if (this.Compare(auxkey1,auxkey2)) {
-		    ntb = p_node.SetLeft(my_null);
-		    ntb = p_node.SetHas_Left(false);
+		auxkey2 = 5;//(p_node.GetLeft()).GetKey() ;
+		if (true) {
+		    //ntb = p_node.SetLeft(my_null);
+		    //ntb = p_node.SetHas_Left(false);
 		}
 		else {
-		    ntb = p_node.SetRight(my_null);
-		    ntb = p_node.SetHas_Right(false);
+		    //ntb = p_node.SetRight(my_null);
+		    //ntb = p_node.SetHas_Right(false);
 		}
 	    }
 	return true ;
@@ -237,7 +237,7 @@ class Tree{
     // Copy the child key to the parent until a leaf is
     // found and remove the leaf. This is done with the
     // right subtree
-    public boolean RemoveRight(Tree p_node, Tree c_node){
+    /*public boolean RemoveRight(Tree p_node, Tree c_node){
 	boolean ntb ;
 
 	while (c_node.GetHas_Right()){
@@ -328,7 +328,7 @@ class Tree{
 	    ntb = this.RecPrint(node.GetRight());
 	} else ntb = true ;
 	return true ;
-    }
+    }*/
 
 }
    

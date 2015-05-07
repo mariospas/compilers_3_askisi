@@ -5,14 +5,19 @@ class ArrayTest{
 }
 
 class Test {
-
+	
+	
 	public int start(int sz){
-		int[] b; 
+		 
+		int[] b;
 		int l;
 		int i;
 		b = new int[sz];
-		l = 5;//b.length;
+		l = b.length;
+		System.out.println(l);
 		i = 0;
+		b[0]=i;
+		System.out.println(b[0]);
 		while(i < (l)){
 			b[i] = i;
 			System.out.println(b[i]);

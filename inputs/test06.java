@@ -13,20 +13,14 @@ class Operator{
     boolean result;
 
     public int compute(){
-
-	op1bool = true;
-	op2bool = true;
-	result = (op1bool && op2bool) && true;
-	
-	if(!result)
-	{
-		System.out.println(8);
-	}
-	else
-	{
-		System.out.println(10);
-	}
-
-	return 0;
+    	int j;
+    	
+    	j=1;
+		while(j<10)
+		{
+			j=j+1;
+		}
+		
+		return j;
     }
 }
