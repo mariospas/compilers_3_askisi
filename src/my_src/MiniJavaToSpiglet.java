@@ -35,6 +35,8 @@ public class MiniJavaToSpiglet extends DepthFirstVisitor
 	String re_temp;	
 	int previous_table_temp;
 	boolean look = false;
+	int arg_count = 0;
+	LinkedHashMap<Integer,String> arguments = new LinkedHashMap<Integer,String>();
 	
 	public MiniJavaToSpiglet(Goal n, LinkedHashMap<String,LinkedHashMap<String,Fun_or_Ident>> Table1,
 	LinkedHashMap<String,String> DeclClasses1,
@@ -45,7 +47,7 @@ public class MiniJavaToSpiglet extends DepthFirstVisitor
 		DeclClasses = DeclClasses1;
 		VTable = VTable1;
 		IdsTable = IdsTable1;
-		temp_count = 20;
+		temp_count = 50;
 		arg_temp_count = 0;
 		label = 0;
 		previous_table_temp = 0;
@@ -342,9 +344,11 @@ public class MiniJavaToSpiglet extends DepthFirstVisitor
 	   
 	   String save_head = "TEMP "+AssignTemp();
 	   spiglet_code += "\tHLOAD "+save_head+" "+save_ident+"\n";
+	   spiglet_code += "\tHLOAD TEMP "+AssignTemp()+" "+save_head+" 0\n";
+	   String save_head_zero = "TEMP "+CurrentTemp();
 	   spiglet_code += "\tMOVE TEMP "+AssignTemp()+" 1\n";
 	   spiglet_code += "\tMOVE TEMP "+AssignTemp()+" TIMES "+save_expr+" 4\n";
-	   spiglet_code += "\tMOVE TEMP "+AssignTemp()+" LT TEMP "+(CurrentTemp()-1)+" "+save_head+"\n";
+	   spiglet_code += "\tMOVE TEMP "+AssignTemp()+" LT TEMP "+(CurrentTemp()-1)+" "+save_head_zero+"\n";
 	   spiglet_code += "\tMOVE TEMP "+AssignTemp()+" MINUS TEMP "+(CurrentTemp()-3)+" TEMP "+(CurrentTemp()-1)+"\n";
 	   spiglet_code += "\tCJUMP TEMP "+CurrentTemp()+" L"+AssignLabel()+"\n";
 	   spiglet_code += "\tERROR\n";
@@ -439,7 +443,8 @@ public class MiniJavaToSpiglet extends DepthFirstVisitor
 		   look = false;
 		   spiglet_code += "\tPRINT "+id_string+"\n";
 	   }
-	   else spiglet_code += "\tPRINT TEMP "+CurrentTemp()+"\n";
+	   //else spiglet_code += "\tPRINT TEMP "+CurrentTemp()+"\n";
+	   else spiglet_code += "\tPRINT "+id_string+"\n";
 	   expr = "print";
    }
    
@@ -500,7 +505,10 @@ public class MiniJavaToSpiglet extends DepthFirstVisitor
     * </PRE>
     */
    public void visit(MinusExpression n) throws Exception, SemError{
+	    boolean flag_call = false;
+	    if(value.equals("call")) flag_call = true; 
 	    System.out.println("here in minus");
+	    value = "right";
 	   	n.f2.accept(this);
 	   	//int save1_temp = CurrentTemp();
 		String save2 = new String(id_string);
@@ -513,6 +521,12 @@ public class MiniJavaToSpiglet extends DepthFirstVisitor
 		
 		id_string = "TEMP "+CurrentTemp();
 		expr = "MINUS";
+		if(flag_call)
+	    {
+		   flag_call = false;
+		   arg_count++;
+		   arguments.put(arg_count, id_string);
+	    }
    }
    
    /* PlusExpression */
@@ -525,7 +539,10 @@ public class MiniJavaToSpiglet extends DepthFirstVisitor
     * </PRE>
     */
    public void visit(PlusExpression n) throws Exception, SemError{
+	    boolean flag_call = false;
+	    if(value.equals("call")) flag_call = true; 
 	    System.out.println("here in plus");
+	    value = "right";
 	    n.f2.accept(this);
 	   	//int save1_temp = CurrentTemp();
 		String save2 = new String(id_string);
@@ -538,6 +555,12 @@ public class MiniJavaToSpiglet extends DepthFirstVisitor
 		
 		id_string = "TEMP "+CurrentTemp();
 		expr = "PLUS";
+		if(flag_call)
+	    {
+		   flag_call = false;
+		   arg_count++;
+		   arguments.put(arg_count, id_string);
+	    }
    }
    
    
@@ -551,7 +574,10 @@ public class MiniJavaToSpiglet extends DepthFirstVisitor
     * </PRE>
     */
    public void visit(TimesExpression n) throws Exception, SemError{
-   	    System.out.println("here in times");
+	    boolean flag_call = false;
+	    if(value.equals("call")) flag_call = true; 
+	    System.out.println("here in times");
+	    value = "right";
    	    n.f2.accept(this);
 	   	//int save1_temp = CurrentTemp();
 		String save2 = new String(id_string);
@@ -564,6 +590,12 @@ public class MiniJavaToSpiglet extends DepthFirstVisitor
 		
 		id_string = "TEMP "+CurrentTemp();
 		expr = "TIMES";
+		if(flag_call)
+	    {
+		   flag_call = false;
+		   arg_count++;
+		   arguments.put(arg_count, id_string);
+	    }
    }
    
    
@@ -578,6 +610,8 @@ public class MiniJavaToSpiglet extends DepthFirstVisitor
     * </PRE>
     */
    public void visit(ArrayLookup n) throws Exception, SemError{
+	   boolean flag_call = false;
+	   if(value.equals("call")) flag_call = true;
 	   value = "left_array";
 	   n.f2.accept(this);
 	   String save_expr = new String(id_string);
@@ -595,9 +629,11 @@ public class MiniJavaToSpiglet extends DepthFirstVisitor
 	   
 	   String save_head = "TEMP "+AssignTemp();
 	   spiglet_code += "\tHLOAD "+save_head+" "+save_ident+"\n";
+	   spiglet_code += "\tHLOAD TEMP "+AssignTemp()+" "+save_head+" 0\n";
+	   String save_head_zero = "TEMP "+CurrentTemp();
 	   spiglet_code += "\tMOVE TEMP "+AssignTemp()+" 1\n";
 	   spiglet_code += "\tMOVE TEMP "+AssignTemp()+" TIMES "+save_expr+" 4\n";
-	   spiglet_code += "\tMOVE TEMP "+AssignTemp()+" LT TEMP "+(CurrentTemp()-1)+" "+save_head+"\n";
+	   spiglet_code += "\tMOVE TEMP "+AssignTemp()+" LT TEMP "+(CurrentTemp()-1)+" "+save_head_zero+"\n";
 	   spiglet_code += "\tMOVE TEMP "+AssignTemp()+" MINUS TEMP "+(CurrentTemp()-3)+" TEMP "+(CurrentTemp()-1)+"\n";
 	   spiglet_code += "\tCJUMP TEMP "+CurrentTemp()+" L"+AssignLabel()+"\n";
 	   spiglet_code += "\tERROR\n";
@@ -613,6 +649,12 @@ public class MiniJavaToSpiglet extends DepthFirstVisitor
 	   expr = "ArrayLookup";
 	   id_string = new String(save_head);
 	   look = true;
+	   if(flag_call)
+	   {
+		   flag_call = false;
+		   arg_count++;
+		   arguments.put(arg_count, id_string);
+	   }
    }
    
  
@@ -648,6 +690,11 @@ public class MiniJavaToSpiglet extends DepthFirstVisitor
 	   spiglet_code += "\tMOVE TEMP "+AssignTemp()+" "+n.f0.toString() + " \n";
 	   expr = "integerliteral";
 	   id_string = "TEMP "+CurrentTemp();
+	   if(value.equals("call"))
+	   {
+		   arg_count++;
+		   arguments.put(arg_count, id_string);
+	   }
    }
    
    /* ThisExpression */
@@ -841,9 +888,19 @@ public class MiniJavaToSpiglet extends DepthFirstVisitor
 	   int save_temp_num = AssignTemp();
 	   spiglet_code += "\tHLOAD TEMP "+ save_temp_num +" TEMP "+ ( CurrentTemp() - 1 ) +" "+ pos*4 + "\n";
 	   
-	   value = "list";
+	   arg_count = 0;
+	   arguments = new LinkedHashMap<Integer,String>();
+	   value = "call";
 	   n.f4.accept(this);
-	   spiglet_code += "\tMOVE TEMP "+AssignTemp()+" CALL "+"TEMP "+save_temp_num+"( TEMP "+save_temp_this+" TEMP "+(CurrentTemp()-1)+" )\n";
+	   spiglet_code += "\tMOVE TEMP "+AssignTemp()+" CALL "+"TEMP "+save_temp_num+"( TEMP "+save_temp_this+" ";
+	   //+(CurrentTemp()-1)+" )\n";
+	   //System.out.println("/////////"+arguments.size());
+	   for(int i=1;i<=arguments.size();i++)
+	   { 
+		   System.out.println("*************"+arguments.get(i));
+		   spiglet_code += arguments.get(i)+" ";
+	   }
+	   spiglet_code += ")\n";
 	   id_string = "TEMP "+CurrentTemp();
    }
    
@@ -950,6 +1007,17 @@ public class MiniJavaToSpiglet extends DepthFirstVisitor
 					this.expr = new String(id_string);
 					return;
 				}
+				else if(value.equals("call"))
+				{
+					id_string = " \tHLOAD TEMP "+ AssignTemp() +" TEMP 0 "+ pos*4+"\n";
+					spiglet_code += id_string;
+					id_string = "TEMP "+CurrentTemp();
+					//System.out.println("*/*/*/ CALL "+id_string);
+					this.expr = new String(id_string);
+					arg_count++;
+					arguments.put(arg_count, id_string);
+					return;
+				}
 				else if(value.equals("left_array"))
 				{
 					temp_z = true;
@@ -965,8 +1033,11 @@ public class MiniJavaToSpiglet extends DepthFirstVisitor
 			}
 			else if(value.equals("call"))
 			{
-				id_string = id;
+				id_string = arg.get(id)+" ";
 				this.expr = new String(id_string);
+				//System.out.println("*/*/*/ CALL "+id_string);
+				arg_count++;
+				arguments.put(arg_count, id_string);
 				return;
 			}
 			else

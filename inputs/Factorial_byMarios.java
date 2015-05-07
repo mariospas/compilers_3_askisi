@@ -11,15 +11,18 @@ class Fac {
 	
     public int ComputeFac(int num){
         int num_aux ;
-        //a = 1+a;
-        //a = b;
-        //b = a+b;
-        //System.out.println(b);
+        int ko;
+        a = num;
+        b = a;
+        b = a+b;
+        ko = this;
+        
+        System.out.println(b);
         b = num;
         //System.out.println(b);
-        number = new int[num];
-        number[1] = b; 
-        System.out.println(number[1]);
+        //number = new int[num];
+        //number[1] = b; 
+        System.out.println(num);
         if (num < 1)
             num_aux = 1 ;
         else
