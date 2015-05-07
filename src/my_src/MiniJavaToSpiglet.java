@@ -469,6 +469,32 @@ public class MiniJavaToSpiglet extends DepthFirstVisitor
 	   //if(expr != null && !class_name.equals("MAIN")) 
    }
    
+   /* AndExpression*/
+   /**
+    * Grammar production:
+    * <PRE>
+    * f0 -> PrimaryExpression()
+    * f1 -> "&&"
+    * f2 -> PrimaryExpression()
+    * </PRE>
+    */
+   public void visit(AndExpression n) throws Exception, SemError{
+	   value = "right";
+	   n.f0.accept(this);
+	   String apotel = "TEMP "+AssignTemp();
+	   
+	   spiglet_code += "\tMOVE "+apotel+" "+id_string+"\n";
+	   spiglet_code += "\tCJUMP "+id_string+" L"+AssignLabel()+"\n";
+	   
+	   value = "right";
+	   n.f2.accept(this);
+	   
+	   spiglet_code += "\tMOVE "+apotel+" "+id_string+"\n";
+	   spiglet_code += "L"+CurrentLabel()+"\n";
+	   
+	   id_string = new String(apotel);
+   }
+	   
    
    /* CompareExpression*/
    /**
@@ -491,6 +517,8 @@ public class MiniJavaToSpiglet extends DepthFirstVisitor
 	    spiglet_code += "\tMOVE TEMP "+AssignTemp()+" LT ";
 	   
 	    spiglet_code +=" "+save1+" "+save2+"\n";
+	    
+	    id_string = "TEMP "+CurrentTemp();
 	   
 	    expr = "compare";
    }
@@ -718,8 +746,14 @@ public class MiniJavaToSpiglet extends DepthFirstVisitor
     */
    public void visit(TrueLiteral n) throws Exception, SemError{
 	    System.out.println("here in true literal");
-	    spiglet_code += "1 ";
-  		expr = "true";
+	    spiglet_code += "\tMOVE TEMP "+AssignTemp()+" 1\n";
+	    id_string = "TEMP "+CurrentTemp();
+	    if(value.equals("call"))
+	    {
+		    arg_count++;
+		    arguments.put(arg_count, id_string);
+	    }
+	    expr = "true";
    }
    
    /* FALSE */
@@ -729,9 +763,15 @@ public class MiniJavaToSpiglet extends DepthFirstVisitor
     * </PRE>
     */
    public void visit(FalseLiteral n) throws Exception, SemError{
-	    System.out.println("here in false literal");
-	    spiglet_code += "0 ";
-  		expr = "false";
+	    System.out.println("here in true literal");
+	    spiglet_code += "\tMOVE TEMP "+AssignTemp()+" 0\n";
+	    id_string = "TEMP "+CurrentTemp();
+	    if(value.equals("call"))
+	    {
+		    arg_count++;
+		    arguments.put(arg_count, id_string);
+	    }
+	    expr = "false";
    }
    
    
