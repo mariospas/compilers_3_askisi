@@ -840,6 +840,27 @@ public class MiniJavaToSpiglet extends DepthFirstVisitor
    }
    
    
+   /* NotExpression */
+   /**
+    * Grammar production:
+    * <PRE>
+    * f0 -> "!"
+    * f1 -> Expression()
+    * </PRE>
+    */
+   public void visit(NotExpression n) throws Exception, SemError{
+	   value = "right";
+	   n.f1.accept(this);
+	   String melos = new String(id_string);
+	   
+	   spiglet_code += "\tMOVE TEMP "+AssignTemp()+" 1\n";
+	   spiglet_code += "\tMOVE TEMP "+AssignTemp()+" MINUS TEMP "+(CurrentTemp()-1)+" "+melos+"\n";
+	   
+	   expr = "notexpr";
+	   id_string = "TEMP "+CurrentTemp();
+   }
+   
+   
    /* Message Send */
    /**
     * <PRE>

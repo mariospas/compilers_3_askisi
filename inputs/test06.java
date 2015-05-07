@@ -15,8 +15,17 @@ class Operator{
     public int compute(){
 
 	op1bool = true;
-	op2bool = false;
-	result = op1bool && op2bool;
+	op2bool = true;
+	result = (op1bool && op2bool) && true;
+	
+	if(!result)
+	{
+		System.out.println(8);
+	}
+	else
+	{
+		System.out.println(10);
+	}
 
 	return 0;
     }
