@@ -226,10 +226,12 @@ public class MiniJavaToSpiglet extends DepthFirstVisitor
 	   spiglet_code += "BEGIN\n";
 	   n.f8.accept(this);
 	   
-	   spiglet_code += "RETURN\n";
 	   value = "right";
-	   spiglet_code += "\t";
 	   n.f10.accept(this);
+	   spiglet_code += "RETURN\n";
+	
+	   spiglet_code += "\t";
+	  
 	   spiglet_code += id_string;
 	   	
 	   spiglet_code += " \nEND\n";
